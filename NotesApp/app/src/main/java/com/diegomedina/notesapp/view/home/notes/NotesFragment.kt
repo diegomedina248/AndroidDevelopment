@@ -1,35 +1,41 @@
-package com.diegomedina.notesapp.view
+package com.diegomedina.notesapp.view.home.notes
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diegomedina.notesapp.R
 import com.diegomedina.notesapp.controller.NoteController
 import com.diegomedina.notesapp.helper.gone
 import com.diegomedina.notesapp.helper.visible
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_notes.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
-    private val adapter = NotesAdapter(this)
+class NotesFragment : Fragment(), CoroutineScope {
+    private val adapter = NotesAdapter()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     private val controller = NoteController()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = inflater.inflate(R.layout.fragment_notes, container, false)
 
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.adapter = adapter
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //        recyclerView.layoutManager = LinearLayoutManager(this)
+        //        recyclerView.adapter = adapter
 
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = adapter
+            layoutManager = LinearLayoutManager(activity)
+            adapter = this@NotesFragment.adapter
         }
 
         getNotes()

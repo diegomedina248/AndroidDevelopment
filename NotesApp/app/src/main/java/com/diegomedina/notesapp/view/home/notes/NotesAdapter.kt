@@ -1,6 +1,5 @@
-package com.diegomedina.notesapp.view
+package com.diegomedina.notesapp.view.home.notes
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,7 @@ import com.diegomedina.notesapp.R
 import com.diegomedina.notesapp.model.Note
 import kotlinx.android.synthetic.main.view_note.view.*
 
-class NotesAdapter(
-    private val context: Context
-) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
+class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
     var notes = listOf<Note>()
         set(value) {
             field = value
@@ -27,7 +24,7 @@ class NotesAdapter(
 //    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        LayoutInflater.from(context)
+        LayoutInflater.from(parent.context)
             .inflate(R.layout.view_note, parent, false)
             .let { view -> NoteViewHolder(view) }
 
