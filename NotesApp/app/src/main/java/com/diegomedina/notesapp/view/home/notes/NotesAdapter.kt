@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.diegomedina.notesapp.R
 import com.diegomedina.notesapp.model.Note
 import kotlinx.android.synthetic.main.view_note.view.*
+import org.threeten.bp.format.DateTimeFormatter
 
 class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
     var notes = listOf<Note>()
         set(value) {
-            field = value
+            field = value.sortedByDescending { it.createdAt }
             notifyDataSetChanged()
         }
-
 
 //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
 //        val view = LayoutInflater.from(context)
@@ -37,6 +37,9 @@ class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
     inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(note: Note) {
             itemView.contentTextView.text = note.content
+            itemView.dateTextView.text = DateTimeFormatter
+                .ofPattern("dd MMMM, yyyy")
+                .format(note.createdAt)
         }
     }
 }

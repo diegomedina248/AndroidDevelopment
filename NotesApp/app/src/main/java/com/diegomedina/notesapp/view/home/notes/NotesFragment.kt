@@ -12,6 +12,7 @@ import com.diegomedina.notesapp.helper.gone
 import com.diegomedina.notesapp.helper.visible
 import kotlinx.android.synthetic.main.fragment_notes.*
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class NotesFragment : Fragment(), CoroutineScope {
@@ -46,12 +47,18 @@ class NotesFragment : Fragment(), CoroutineScope {
         recyclerView.gone()
 
         launch(Dispatchers.IO) {
-            val notes = controller.getAllNotes()
-            withContext(Dispatchers.Main) {
-                adapter.notes = notes
+            try {
+                val notes = controller.getAllNotes()
+                withContext(Dispatchers.Main) {
+                    adapter.notes = notes
 
-                progressBar.gone()
-                recyclerView.visible()
+                    progressBar.gone()
+                    recyclerView.visible()
+                }
+            } catch (error: Exception) {
+                if (error is HttpException) {
+                    error.code()
+                }
             }
         }
     }

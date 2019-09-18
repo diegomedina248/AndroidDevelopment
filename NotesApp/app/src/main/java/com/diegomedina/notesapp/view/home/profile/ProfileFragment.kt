@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
 class ProfileFragment : Fragment(), CoroutineScope {
@@ -36,12 +37,16 @@ class ProfileFragment : Fragment(), CoroutineScope {
 
     private fun logout() {
         launch(Dispatchers.IO) {
-            authController.logout()
-            withContext(Dispatchers.Main) {
-                activity?.let {
-                    it.startActivity(Intent(it, AuthActivity::class.java))
-                    it.finish()
+            try {
+                authController.logout()
+                withContext(Dispatchers.Main) {
+                    activity?.let {
+                        it.startActivity(Intent(it, AuthActivity::class.java))
+                        it.finish()
+                    }
                 }
+            } catch (error: Exception) {
+
             }
         }
     }
