@@ -8,9 +8,10 @@ import okhttp3.OkHttpClient
 import org.threeten.bp.ZonedDateTime
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.HttpURLConnection
 
 object RetrofitController {
-    var accessToken: String? = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHBpcmVzX29uIjoiMjAxOS0wOS0xOCAyMzoyMzozOCArMDAwMCIsImV4cCI6MTU2ODkzMTgxOX0.gLJ-nKSnCe8VnNAY82pKcxU8IXzkxAxYMOW1ty9RQSY"
+    var accessToken: String? = null
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://mighty-beyond-54626.herokuapp.com/")
@@ -31,7 +32,7 @@ object RetrofitController {
             .addInterceptor { chain ->
                 val response = chain.proceed(chain.request())
 
-                if (response.code() in 400..499) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     App.goToLoginScreen()
                 }
 
@@ -41,7 +42,7 @@ object RetrofitController {
                 if (accessToken != null) {
                     val request = chain.request()
                         .newBuilder()
-                        .addHeader("Authorization", accessToken)
+                        .addHeader("Authorization", accessToken ?: "")
                         .build()
 
                     chain.proceed(request)
