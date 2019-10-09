@@ -32,7 +32,7 @@ object RetrofitController {
             .addInterceptor { chain ->
                 val response = chain.proceed(chain.request())
 
-                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED && accessToken != null) {
                     App.goToLoginScreen()
                 }
 
