@@ -4,6 +4,10 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.util.Log
+import com.diegomedina.notesapp.controller.RetrofitController
+import com.diegomedina.notesapp.controller.SharedPreferencesController
 import com.diegomedina.notesapp.view.auth.AuthActivity
 import com.jakewharton.threetenabp.AndroidThreeTen
 import java.lang.ref.WeakReference
@@ -16,6 +20,8 @@ class App : Application() {
         AndroidThreeTen.init(this)
 
         listenActivityCallbacks()
+
+        RetrofitController.accessToken = SharedPreferencesController.getToken(this)
     }
 
     private fun listenActivityCallbacks() {

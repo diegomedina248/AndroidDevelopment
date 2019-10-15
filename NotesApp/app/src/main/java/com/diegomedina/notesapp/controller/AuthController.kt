@@ -1,5 +1,6 @@
 package com.diegomedina.notesapp.controller
 
+import com.diegomedina.notesapp.App
 import com.diegomedina.notesapp.service.AuthService
 import com.diegomedina.notesapp.service.request.LoginRequest
 
@@ -10,7 +11,10 @@ class AuthController {
         val request = LoginRequest(email, password)
         val response = authService.login(request)
 
-        RetrofitController.accessToken = response.authToken
+        with(response.authToken) {
+            RetrofitController.accessToken = this
+            SharedPreferencesController.saveToken(this, App.currentActivity.get())
+        }
     }
 
     suspend fun logout() {
