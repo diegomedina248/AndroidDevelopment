@@ -1,6 +1,5 @@
-package com.diegomedina.notesapp
+package com.example.roomdatabase
 
-import com.diegomedina.notesapp.presentation.view.home.notes.NotesViewModel
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,8 +11,7 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun exampleMock() {
-        var viewmodel = NotesViewModel(MockNotesDataSourceRepository())
-        viewmodel.loadNotes()
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
     }
 }

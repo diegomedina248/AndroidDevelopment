@@ -4,15 +4,24 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.util.Log
-import com.diegomedina.notesapp.controller.RetrofitController
-import com.diegomedina.notesapp.controller.SharedPreferencesController
-import com.diegomedina.notesapp.view.auth.AuthActivity
+import com.diegomedina.notesapp.data.controller.RetrofitController
+import com.diegomedina.notesapp.data.controller.SharedPreferencesController
+import com.diegomedina.notesapp.inject.databaseModule
+import com.diegomedina.notesapp.inject.loginModule
+import com.diegomedina.notesapp.inject.networkModule
+import com.diegomedina.notesapp.inject.notesModule
+import com.diegomedina.notesapp.presentation.view.auth.AuthActivity
 import com.jakewharton.threetenabp.AndroidThreeTen
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import java.lang.ref.WeakReference
 
 class App : Application() {
+
+    private val retrofitController: RetrofitController by inject()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -21,7 +30,13 @@ class App : Application() {
 
         listenActivityCallbacks()
 
-        RetrofitController.accessToken = SharedPreferencesController.getToken(this)
+        retrofitController.accessToken = SharedPreferencesController.getToken(this)
+
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            modules(listOf(notesModule, loginModule, networkModule, databaseModule))
+        }
     }
 
     private fun listenActivityCallbacks() {
