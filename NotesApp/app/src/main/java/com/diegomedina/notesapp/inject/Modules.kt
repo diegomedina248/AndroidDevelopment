@@ -4,6 +4,7 @@ import android.preference.PreferenceManager
 import com.diegomedina.notesapp.data.controller.AuthController
 import com.diegomedina.notesapp.data.controller.RetrofitController
 import com.diegomedina.notesapp.data.helper.adapter.ZonedDateTimeAdapter
+import com.diegomedina.notesapp.data.helper.networking.NetworkingManager
 import com.diegomedina.notesapp.data.repository.NotesSourceDataRepository
 import com.diegomedina.notesapp.data.repository.NotesSourceRepository
 import com.diegomedina.notesapp.data.repository.notes.NotesDataStoreFactory
@@ -21,6 +22,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 var networkModule = module {
+    single { NetworkingManager(get()) }
     single<GsonConverterFactory> {
         GsonConverterFactory.create(
             GsonBuilder()
@@ -48,8 +50,8 @@ var notesModule = module {
 }
 
 var loginModule = module {
+    single { AuthController(get(), get(), get()) }
     single { PreferenceManager.getDefaultSharedPreferences(get()) }
-    single { AuthController(get(), get()) }
 
     viewModel { LoginViewModel(get()) }
 }

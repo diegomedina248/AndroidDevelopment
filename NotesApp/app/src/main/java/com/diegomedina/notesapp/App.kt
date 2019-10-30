@@ -3,13 +3,14 @@ package com.diegomedina.notesapp
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.diegomedina.notesapp.data.controller.RetrofitController
-import com.diegomedina.notesapp.data.controller.SharedPreferencesController
 import com.diegomedina.notesapp.inject.databaseModule
 import com.diegomedina.notesapp.inject.loginModule
 import com.diegomedina.notesapp.inject.networkModule
 import com.diegomedina.notesapp.inject.notesModule
+import com.diegomedina.notesapp.presentation.view.accessTokenKey
 import com.diegomedina.notesapp.presentation.view.auth.AuthActivity
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.koin.android.ext.android.inject
@@ -20,6 +21,7 @@ import java.lang.ref.WeakReference
 
 class App : Application() {
     private val retrofitController: RetrofitController by inject()
+    private val sharedPreferences: SharedPreferences by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -35,7 +37,7 @@ class App : Application() {
 
         listenActivityCallbacks()
 
-        retrofitController.accessToken = SharedPreferencesController.getToken(this)
+        retrofitController.accessToken = sharedPreferences.getString(accessTokenKey, null)
     }
 
     private fun listenActivityCallbacks() {

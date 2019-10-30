@@ -1,4 +1,4 @@
-package com.diegomedina.notesapp
+package com.diegomedina.notesapp.mocks
 
 import com.diegomedina.notesapp.data.model.Note
 import com.diegomedina.notesapp.data.repository.NotesSourceRepository
