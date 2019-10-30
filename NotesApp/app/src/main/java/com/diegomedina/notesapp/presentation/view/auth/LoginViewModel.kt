@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.diegomedina.notesapp.data.controller.AuthController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,7 +29,7 @@ class LoginViewModel : ViewModel(), CoroutineScope {
     val loginSuccess: LiveData<Boolean>
         get() = localLoginSuccess
 
-    private val authController = AuthController()
+//    private val authController = AuthController(null, null)
     private val job = Job()
 
     private val localLoginSuccess = MutableLiveData<Boolean>()
@@ -41,10 +40,10 @@ class LoginViewModel : ViewModel(), CoroutineScope {
         localIsLoading.postValue(true)
         launch(Dispatchers.IO) {
             try {
-                authController.login(
-                        email.value ?: "",
-                password.value ?: ""
-                )
+//                authController.login(
+//                        email.value ?: "",
+//                password.value ?: ""
+//                )
                 localLoginSuccess.postValue(true)
             } catch (exception: Throwable) {
                 localError.postValue(exception)

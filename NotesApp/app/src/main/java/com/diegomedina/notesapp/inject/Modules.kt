@@ -7,6 +7,7 @@ import com.diegomedina.notesapp.data.helper.adapter.ZonedDateTimeAdapter
 import com.diegomedina.notesapp.data.repository.NotesSourceDataRepository
 import com.diegomedina.notesapp.data.repository.NotesSourceRepository
 import com.diegomedina.notesapp.data.repository.notes.NotesDataStoreFactory
+import com.diegomedina.notesapp.data.service.AuthService
 import com.diegomedina.notesapp.data.service.NoteService
 import com.diegomedina.notesapp.data.source.AppDatabase
 import com.diegomedina.notesapp.presentation.view.home.notes.NotesViewModel
@@ -30,6 +31,7 @@ var networkModule = module {
 
     single<Retrofit> { RetrofitController(get()).initRetrofit() }
     single<NoteService> { get<Retrofit>().create(NoteService::class.java) }
+    single<AuthService> { get<Retrofit>().create(AuthService::class.java) }
 }
 
 var databaseModule = module {
@@ -37,7 +39,7 @@ var databaseModule = module {
 }
 
 var notesModule = module {
-    single { NotesDataStoreFactory(get(), get()) }
+    single { NotesDataStoreFactory(get(), get(), get()) }
     single<NotesSourceRepository> { NotesSourceDataRepository(get()) }
 
     viewModel { NotesViewModel(get()) }
@@ -45,5 +47,5 @@ var notesModule = module {
 
 var loginModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(get()) }
-    single { AuthController() }
+    single { AuthController(get(), get()) }
 }

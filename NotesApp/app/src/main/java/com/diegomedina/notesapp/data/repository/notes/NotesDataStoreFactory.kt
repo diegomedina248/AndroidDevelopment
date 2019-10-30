@@ -1,11 +1,24 @@
 package com.diegomedina.notesapp.data.repository.notes
 
+import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+import androidx.core.content.ContextCompat.getSystemService
 import com.diegomedina.notesapp.data.dao.NoteDao
 import com.diegomedina.notesapp.data.service.NoteService
 
-class NotesDataStoreFactory(var service: NoteService, var dao: NoteDao) {
+@Suppress("UNUSED_PARAMETER")
+class NotesDataStoreFactory(var context: Context, var service: NoteService, var dao: NoteDao) {
 
-    private var condition = true
+    private fun isNetworkOnline(): Boolean {
+        val connectivityManager =
+            getSystemService(context, CONNECTIVITY_SERVICE::class.java) as ConnectivityManager?
+        connectivityManager?.let {
+            return connectivityManager.isDefaultNetworkActive
+        }
+
+        return false
+    }
 
     var notesDataStoreFactory: NotesDataStore
         get() {
@@ -13,7 +26,7 @@ class NotesDataStoreFactory(var service: NoteService, var dao: NoteDao) {
         }
         set(value) {}
 
-    private fun createDataSourceFactory() = if (condition) {
+    private fun createDataSourceFactory() = if (isNetworkOnline()) {
         CloudNotesDataStore(service)
     } else {
         DatabaseNotesDataStore(dao)
