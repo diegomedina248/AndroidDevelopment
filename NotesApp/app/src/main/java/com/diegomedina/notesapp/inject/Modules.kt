@@ -10,10 +10,11 @@ import com.diegomedina.notesapp.data.repository.notes.NotesDataStoreFactory
 import com.diegomedina.notesapp.data.service.AuthService
 import com.diegomedina.notesapp.data.service.NoteService
 import com.diegomedina.notesapp.data.source.AppDatabase
+import com.diegomedina.notesapp.presentation.view.auth.LoginViewModel
 import com.diegomedina.notesapp.presentation.view.home.notes.NotesViewModel
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.threeten.bp.ZonedDateTime
 import retrofit2.Retrofit
@@ -29,7 +30,8 @@ var networkModule = module {
         )
     }
 
-    single<Retrofit> { RetrofitController(get()).initRetrofit() }
+    single { RetrofitController(get()) }
+    single<Retrofit> { get<RetrofitController>().initRetrofit() }
     single<NoteService> { get<Retrofit>().create(NoteService::class.java) }
     single<AuthService> { get<Retrofit>().create(AuthService::class.java) }
 }
@@ -48,4 +50,6 @@ var notesModule = module {
 var loginModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(get()) }
     single { AuthController(get(), get()) }
+
+    viewModel { LoginViewModel(get()) }
 }

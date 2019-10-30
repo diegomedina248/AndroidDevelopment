@@ -9,15 +9,16 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.diegomedina.notesapp.R
 import com.diegomedina.notesapp.databinding.FragmentLoginBinding
 import com.diegomedina.notesapp.presentation.helper.visibleIf
 import com.diegomedina.notesapp.presentation.view.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModel()
+
     private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
@@ -36,8 +37,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel

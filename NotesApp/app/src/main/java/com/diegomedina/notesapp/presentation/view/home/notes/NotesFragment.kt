@@ -11,7 +11,7 @@ import com.diegomedina.notesapp.R
 import com.diegomedina.notesapp.data.model.Note
 import com.diegomedina.notesapp.presentation.helper.visibleIf
 import kotlinx.android.synthetic.main.fragment_notes.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotesFragment : Fragment() {
     private val adapter = NotesAdapter()

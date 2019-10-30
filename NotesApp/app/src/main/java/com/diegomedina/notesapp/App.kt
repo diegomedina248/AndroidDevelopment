@@ -19,11 +19,16 @@ import org.koin.core.context.startKoin
 import java.lang.ref.WeakReference
 
 class App : Application() {
-
     private val retrofitController: RetrofitController by inject()
 
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            modules(listOf(notesModule, loginModule, networkModule, databaseModule))
+        }
 
         // Initializing LocalDate backport
         AndroidThreeTen.init(this)
@@ -31,12 +36,6 @@ class App : Application() {
         listenActivityCallbacks()
 
         retrofitController.accessToken = SharedPreferencesController.getToken(this)
-
-        startKoin {
-            androidLogger()
-            androidContext(this@App)
-            modules(listOf(notesModule, loginModule, networkModule, databaseModule))
-        }
     }
 
     private fun listenActivityCallbacks() {
